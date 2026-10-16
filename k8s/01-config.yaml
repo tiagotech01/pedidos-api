@@ -1,0 +1,21 @@
+# Configuracoes que nao sao secretas
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pedidos-api-config
+  namespace: pedidos
+data:
+  DB_URL: jdbc:postgresql://postgres:5432/pedidos
+  VIACEP_URL: https://viacep.com.br/ws
+---
+# Credenciais: em um ambiente real, NUNCA versionadas no Git.
+# Sao criadas pela pipeline ou por ferramentas como Sealed Secrets / Vault.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pedidos-db-credentials
+  namespace: pedidos
+type: Opaque
+stringData:
+  DB_USER: pedidos
+  DB_PASSWORD: pedidos

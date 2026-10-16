@@ -81,3 +81,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  kubernetes:
+    name: Validar manifestos Kubernetes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o codigo
+        uses: actions/checkout@v5
+
+      - name: Validar com kubeconform
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          ./kubeconform -strict -summary k8s/
