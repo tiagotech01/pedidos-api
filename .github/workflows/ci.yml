@@ -93,3 +93,21 @@ jobs:
         run: |
           curl -sSL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
           ./kubeconform -strict -summary k8s/
+
+  smoke-test:
+    name: Smoke test com Docker Compose
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o codigo
+        uses: actions/checkout@v5
+
+      - name: Subir PostgreSQL e aplicacao
+        run: ./scripts/subir-ambiente.sh
+
+      - name: Executar o smoke test
+        run: ./scripts/smoke-test.sh
+
+      - name: Derrubar o ambiente
+        if: always()
+        run: docker compose down -v
