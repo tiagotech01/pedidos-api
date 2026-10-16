@@ -16,6 +16,19 @@ services:
       timeout: 3s
       retries: 10
 
+  app:
+    build: .
+    container_name: pedidos-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/pedidos
+      DB_USER: pedidos
+      DB_PASSWORD: pedidos
+    ports:
+      - "8080:8080"
+
   sonarqube:
     image: sonarqube:community
     container_name: pedidos-sonarqube
