@@ -16,5 +16,19 @@ services:
       timeout: 3s
       retries: 10
 
+  sonarqube:
+    image: sonarqube:community
+    container_name: pedidos-sonarqube
+    profiles: ["qualidade"]
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+
 volumes:
   pedidos-data:
+  sonarqube-data:
+  sonarqube-extensions:
