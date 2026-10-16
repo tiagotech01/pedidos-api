@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import br.com.portfolio.pedidos.api.exception.ServicoExternoException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,6 +27,12 @@ public class GlobalExceptionHandler {
     public ProblemDetail tratarRegraNegocio(RegraNegocioException ex) {
         return problema(
                 HttpStatusCode.valueOf(UNPROCESSABLE), "Regra de negócio violada", ex.getMessage());
+    }
+
+    @ExceptionHandler(ServicoExternoException.class)
+    public ProblemDetail tratarServicoExterno(ServicoExternoException ex) {
+        return problema(
+                HttpStatus.SERVICE_UNAVAILABLE, "Serviço externo indisponível", ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
